@@ -1,15 +1,26 @@
 pipeline {
     agent any 
     stages {
-        stage('Update Packages') {
+        stage('Stage 1: Update Packages') {
             steps {
                 echo 'Updating Debian packages...'
-                // Use sudo only if the Jenkins user has passwordless sudo rights
                 sh 'sudo apt-get update && sudo apt-get upgrade -y'
             }
         }
         
-        stage('Build') {
+        stage('Stage 2: Checking and fixing violations') {
+            steps {
+                echo 'Building...'
+            }
+        }
+
+        stage('Stage 3: Running the application') {
+            steps {
+                echo 'Building...'
+            }
+        }
+
+        stage('Stage 4: Unit test') {
             steps {
                 echo 'Building...'
             }
