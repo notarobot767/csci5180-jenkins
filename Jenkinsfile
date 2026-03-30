@@ -4,7 +4,13 @@ pipeline {
         stage('Stage 1: Update Packages') {
             steps {
                 echo 'Updating Debian packages...'
-                sh 'sudo apt-get update && sudo apt-get upgrade -y'
+                sh 'sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y
+                    python3
+                    python3-ncclient
+                    python3-pandas
+                    python3-netaddr
+                    python3-prettytable
+                    pylint'
             }
         }
         
