@@ -20,7 +20,7 @@ pipeline {
         
         stage('Stage 2: Checking and fixing violations') {
             steps {
-                echo 'Building...t'
+                echo 'Building...'
             }
         }
 
