@@ -12,7 +12,13 @@ except ImportError as e:
     sys.exit()
 
 if __name__ == "__main__":
-    TABLE = PrettyTable(['Router', 'Hostname', 'Loopback 99 IP', 'OSPF area', 'Advertised OSPF Networks'])
+    TABLE = PrettyTable([
+        'Router',
+        'Hostname',
+        'Loopback 99 IP',
+        'OSPF area',
+        'Advertised OSPF Networks'
+    ])
     file = 'info.csv'
     if not os.path.exists(file):
         print(f"File {file} not found, exiting")
