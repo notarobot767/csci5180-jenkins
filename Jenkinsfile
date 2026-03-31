@@ -24,10 +24,8 @@ pipeline {
         
         stage('Stage 2: Checking and fixing violations') {
             steps {
-                echo 'Building...'
-                
+                echo 'checking for violations...'
                 sh 'pylint netman_netconf_obj2.py > pylint.log || true'
-                //sh '/usr/bin/pylint --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" netman_netconf_obj2.py > pylint.log || true'
                 recordIssues(
                     tool: pyLint(pattern: 'pylint.log'),
                     qualityGates: [
@@ -51,7 +49,8 @@ pipeline {
 
         stage('Stage 4: Unit test') {
             steps {
-                echo 'Building...'
+                echo 'Executing test_netman.py'
+                sh 'python3 test_netman.py'
             }
         }
     }
