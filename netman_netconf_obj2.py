@@ -7,18 +7,18 @@ try:
     import ipaddress
     import os
     import sys
-except Exception:
-    print('Install all the necessary modules')
+except ImportError as e:
+    print(f'Error: {e}. Install all the necessary modules')
     sys.exit()
 
 if __name__ == "__main__":
     TABLE = PrettyTable(['Router', 'Hostname', 'Loopback 99 IP', 'OSPF area', 'Advertised OSPF Networks'])
     file = 'info.csv'
     if not os.path.exists(file):
-        print("File {} not found, exiting".format(file))
+        print(f"File {file} not found, exiting")
         sys.exit()
     if os.stat(file).st_size == 0:
-        print('File {} is empty, exiting'.format(file))
+        print(f'File {file} is empty, exiting')
         sys.exit()
     READ_FILE = pd.read_csv('info.csv')
     ROUTERS = READ_FILE['Router'].to_list()
@@ -55,7 +55,7 @@ if __name__ == "__main__":
                                      device_params={'name': 'iosxr'},
                                      allow_agent=False,
                                      look_for_keys=True)
-        print('Logging into router {} and sending configurations'.format(ROUTERS[i]))
+        print(f'Logging into router {ROUTERS[i]} and sending configurations')
         cfg1 = cfg % (HOST[i], LO_NAME[i], LO_IP[i], MASK[i], NETWORKS[i], WILDCARD[i], AREA[i])
         edit_cfg = connection.edit_config(target='running', config=cfg1)
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
                                      device_params={'name': 'iosxr'},
                                      allow_agent=False,
                                      look_for_keys=True)
-        print('Pulling information from router {} to display'.format(ROUTERS[i]))
+        print(f'Pulling information from router {ROUTERS[i]} to display')
 
         fetch_hostname = FETCH_INFO % ('| i hostname')
         output1 = connection.get_config('running', fetch_hostname)
