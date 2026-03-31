@@ -21,6 +21,14 @@ pipeline {
         stage('Stage 2: Checking and fixing violations') {
             steps {
                 echo 'Building...'
+                sh 'pylint --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" netman_netconf_obj2.py > pylint.log || true'
+                recordIssues(
+                    tool: pyLint(pattern: 'pylint.log'),
+                    qualityGates: [
+                        [threshold: 10, type: 'TOTAL', criticality: 'FAILURE']
+                    ],
+                    failGeneally: true 
+                )
             }
         }
 
