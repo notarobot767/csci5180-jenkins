@@ -26,8 +26,7 @@ pipeline {
                     tool: pyLint(pattern: 'pylint.log'),
                     qualityGates: [
                         [threshold: 10, type: 'TOTAL', criticality: 'FAILURE']
-                    ],
-                    failGeneally: true 
+                    ]
                 )
             }
         }
