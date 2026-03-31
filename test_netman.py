@@ -38,7 +38,6 @@ class TEST(unittest.TestCase):
 
     # Requirement 2: Verify R1 is configured only for a single area
     def test_r1_single_area(self):
-        # Filter to pull the OSPF configuration section
         FETCH_INFO = '''
             <filter>
                 <config-format-text-block>
@@ -47,14 +46,12 @@ class TEST(unittest.TestCase):
             </filter>
         '''
         
-        # Connect to R1 (adjust the IP to your R1 management IP)
         with manager.connect(host="198.51.100.11", **self.common) as m:
             response = m.get_config(source='running', filter=FETCH_INFO)
             output = str(response)
             area_count = set()
             for line in output.strip().split("\n"):
                 line = line.strip()
-                print(line)
                 if line and "network " in line:
                     area = int(line.split()[4])
                     area_count.add(area)
@@ -63,6 +60,21 @@ class TEST(unittest.TestCase):
             
             self.assertEqual(area_count, 1, "R1 has more than one area!")
             self.assertIn("area 0", output, "R1 is missing the backbone area 0")
+    
+    # Requirement 3: Ping from R2 Loopback to R5 Loopback
+    def test_r2_to_r5_ping(self):
+        PING_FILTER = '''
+            <config-format-text-block>
+                <text-filter-spec> ping 10.1.5.1 source Loopback99 </text-filter-spec>
+            </config-format-text-block>
+        '''
+        
+        with manager.connect(host="198.51.100.12", **self.common) as m:
+            response = m.get(filter=('subtree', PING_FILTER))
+            output = str(response)
+            print(output)
+            self.assertIn("!!!!", output, "Network is not converged: R2 cannot reach R5.")
+            self.assertNotIn("rpc-error", output, "Router rejected the command syntax.")
 
 def main():
     unittest.main()
