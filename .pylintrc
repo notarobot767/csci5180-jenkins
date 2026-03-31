@@ -1,0 +1,7 @@
+[REPORTS]
+output-format=parseable
+msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg}
+
+[MESSAGES CONTROL]
+disable=C0111,  # Missing docstring (very common to disable in labs)
+        C0103   # Invalid constant name

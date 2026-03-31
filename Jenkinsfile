@@ -26,11 +26,16 @@ pipeline {
             steps {
                 echo 'Building...'
                 
-                sh '/usr/bin/pylint --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" netman_netconf_obj2.py > pylint.log || true'
+                sh 'pylint netman_netconf_obj2.py > pylint.log || true'
+                //sh '/usr/bin/pylint --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" netman_netconf_obj2.py > pylint.log || true'
                 recordIssues(
                     tool: pyLint(pattern: 'pylint.log'),
                     qualityGates: [
-                        [threshold: 10, type: 'TOTAL', criticality: 'FAILURE']
+                        [
+                            threshold: 5,
+                            type: 'TOTAL',
+                            criticality: 'FAILURE'
+                        ]
                     ]
                 )
                 
