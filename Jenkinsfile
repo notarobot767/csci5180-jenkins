@@ -53,7 +53,6 @@ pipeline {
                 body: """<h3>Build Status: ${currentBuild.currentResult}</h3>
                          <p>The Jenkins pipeline for <b>netman_netconf_obj2.py</b> has finished.</p>
                          <p>Check the console output here: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
-                to: 'your-email@example.com',
                 from: 'jenkins@netman.io'
             )
         }
